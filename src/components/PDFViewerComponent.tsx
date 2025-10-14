@@ -33,7 +33,12 @@ const PDFViewerComponent: React.FC<PDFViewerProps> = ({ data }) => {
 	return (
 		<div className="h-full flex flex-col">
 			<div className="flex-1 border rounded-lg overflow-hidden bg-gray-50">
-				<PDFViewer width="100%" height="100%" className="rounded-lg">
+				<PDFViewer
+					width="100%"
+					height="100%"
+					className="rounded-lg"
+					showToolbar={false}
+				>
 					<InvoicePDF data={data} />
 				</PDFViewer>
 			</div>

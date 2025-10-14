@@ -84,7 +84,9 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ data, onChange }) => {
 			{/* Invoice Header */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Invoice Header</CardTitle>
+					<CardTitle>
+						<h2>Invoice Header</h2>
+					</CardTitle>
 				</CardHeader>
 				<CardContent className="space-y-4">
 					<div className="grid grid-cols-2 gap-4">
@@ -141,7 +143,9 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ data, onChange }) => {
 			{/* From Section */}
 			<Card>
 				<CardHeader>
-					<CardTitle>From (Sender)</CardTitle>
+					<CardTitle>
+						<h2>From (Sender)</h2>
+					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<Textarea
@@ -156,7 +160,9 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ data, onChange }) => {
 			{/* To Section */}
 			<Card>
 				<CardHeader>
-					<CardTitle>To (Recipient)</CardTitle>
+					<CardTitle>
+						<h2>To (Recipient)</h2>
+					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<Textarea
@@ -171,7 +177,9 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ data, onChange }) => {
 			{/* Bank Details */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Bank Details</CardTitle>
+					<CardTitle>
+						<h2>Bank Details</h2>
+					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<Textarea
@@ -186,7 +194,9 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ data, onChange }) => {
 			{/* Remarks */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Remarks</CardTitle>
+					<CardTitle>
+						<h2>Remarks</h2>
+					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<Textarea
@@ -201,13 +211,15 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ data, onChange }) => {
 			{/* Products/Services */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Products/Services</CardTitle>
+					<CardTitle>
+						<h2>Products/Services</h2>
+					</CardTitle>
 				</CardHeader>
 				<CardContent className="space-y-4">
 					{data.products.map((product, index) => (
 						<div key={index} className="border rounded-lg p-4 space-y-4">
 							<div className="flex justify-between items-center">
-								<h4 className="font-medium">Product {index + 1}</h4>
+								<h3 className="font-medium">Product {index + 1}</h3>
 								{data.products.length > 1 && (
 									<Button
 										type="button"

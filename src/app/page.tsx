@@ -6,7 +6,7 @@ import InvoiceForm from "@/components/InvoiceForm";
 import PDFViewerComponent from "@/components/PDFViewerComponent";
 import DownloadButton from "@/components/DownloadButton";
 import { Button } from "@/components/ui/button";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, Github } from "lucide-react";
 
 export default function Home() {
 	const [isClient, setIsClient] = useState(false);
@@ -45,11 +45,25 @@ export default function Home() {
 	return (
 		<div className="min-h-screen bg-gray-100 p-4">
 			<div className="max-w-7xl mx-auto">
-				<div className="flex justify-between items-center mb-8">
+				<div className="flex justify-between flex-wrap gap-4 items-center mb-8">
 					<h1 className="text-3xl font-bold text-gray-800">
 						Invoice Generator
 					</h1>
-					<div className="flex items-center gap-4">
+
+					<div className="flex items-center flex-wrap gap-4">
+						<Button
+							variant="outline"
+							onClick={() =>
+								window.open(
+									"https://github.com/vladyslavl/invoice-generator",
+									"_blank"
+								)
+							}
+							className="flex items-center gap-2"
+						>
+							<Github className="w-4 h-4" />
+							GitHub
+						</Button>
 						<Button
 							variant="outline"
 							onClick={resetToDefaults}
@@ -58,6 +72,7 @@ export default function Home() {
 							<RotateCcw className="w-4 h-4" />
 							Reset to Defaults
 						</Button>
+
 						{isClient && <DownloadButton data={invoiceData} />}
 					</div>
 				</div>

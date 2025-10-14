@@ -1,5 +1,7 @@
 # Invoice Generator
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-green?style=for-the-badge)](https://invoice-generator-demo.vercel.app)
+
 A professional PDF invoice generator built with Next.js 15.2, React PDF, and Tailwind CSS. Create, preview, and download professional invoices with ease.
 
 ## 🚀 Features
@@ -60,7 +62,7 @@ A professional PDF invoice generator built with Next.js 15.2, React PDF, and Tai
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/vladyslavl/invoice-generator.git
 cd invoice-generator
 ```
 
@@ -166,9 +168,20 @@ This project is open source and available under the [MIT License](LICENSE).
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
 ## 📞 Support
 
-If you have any questions or need help, please open an issue on GitHub.
+If you have any questions or need help, please open an issue on [GitHub](https://github.com/vladyslavl/invoice-generator/issues).
+
+## 🔗 Links
+
+- **GitHub Repository**: [https://github.com/vladyslavl/invoice-generator](https://github.com/vladyslavl/invoice-generator)
+- **Live Demo**: [https://invoice-generator-demo.vercel.app](https://invoice-generator-demo.vercel.app)
 
 ---
 

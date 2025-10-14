@@ -1,6 +1,6 @@
 # Invoice Generator
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-green?style=for-the-badge)](https://invoice-generator-demo.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-green?style=for-the-badge)](https://your-invoice-generator.vercel.app)
 
 A professional PDF invoice generator built with Next.js 15.2, React PDF, and Tailwind CSS. Create, preview, and download professional invoices with ease.
 

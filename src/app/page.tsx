@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { defaultInvoiceData, InvoiceData } from "@/types/invoice";
 import InvoiceForm from "@/components/InvoiceForm";
 import PDFViewerComponent from "@/components/PDFViewerComponent";
@@ -32,10 +32,37 @@ export default function Home() {
 		}
 	}, []);
 
-	// Save data to localStorage whenever invoiceData changes
+	// Debounced save to localStorage to avoid excessive writes
+	const invoiceRef = useRef(invoiceData);
 	useEffect(() => {
-		localStorage.setItem("invoiceData", JSON.stringify(invoiceData));
+		invoiceRef.current = invoiceData;
 	}, [invoiceData]);
+
+	useEffect(() => {
+		const id = setTimeout(() => {
+			try {
+				localStorage.setItem("invoiceData", JSON.stringify(invoiceData));
+			} catch (e) {
+				console.error("Failed to save invoice data:", e);
+			}
+		}, 500);
+
+		return () => clearTimeout(id);
+	}, [invoiceData]);
+
+	// Ensure data is saved on page unload (uses latest value via ref)
+	useEffect(() => {
+		const handleBeforeUnload = () => {
+			try {
+				localStorage.setItem("invoiceData", JSON.stringify(invoiceRef.current));
+			} catch (e) {
+				// ignore
+			}
+		};
+
+		window.addEventListener("beforeunload", handleBeforeUnload);
+		return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+	}, []);
 
 	const resetToDefaults = () => {
 		setInvoiceData(defaultInvoiceData);

@@ -1,12 +1,20 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { InvoiceData } from "@/types/invoice";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { Plus, Save } from "lucide-react";
 
 interface InvoiceFormProps {
 	data: InvoiceData;
@@ -14,6 +22,9 @@ interface InvoiceFormProps {
 }
 
 const InvoiceForm: React.FC<InvoiceFormProps> = ({ data, onChange }) => {
+	const [isAddingNew, setIsAddingNew] = useState(false);
+	const [newRecipient, setNewRecipient] = useState("");
+
 	// Функція валідації дати
 	const validateDate = (dateString: string): boolean => {
 		if (!dateString) return true; // Порожня дата допустима
@@ -52,7 +63,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ data, onChange }) => {
 	const handleProductChange = (
 		index: number,
 		field: string,
-		value: string | number
+		value: string | number,
 	) => {
 		const newData = { ...data };
 		newData.products[index] = { ...newData.products[index], [field]: value };
@@ -77,6 +88,51 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ data, onChange }) => {
 			newData.products.splice(index, 1);
 			onChange(newData);
 		}
+	};
+
+	// Функція для вибору отримувача зі списку
+	const handleSelectRecipient = (value: string) => {
+		const newData = { ...data };
+		newData.to = value;
+		onChange(newData);
+	};
+
+	// Функція для додавання нового отримувача
+	const handleAddNewRecipient = () => {
+		if (!newRecipient.trim()) return;
+
+		const newData = { ...data };
+		const recipients = newData.recipients || [];
+
+		// Додаємо нового отримувача, якщо його ще немає
+		if (!recipients.includes(newRecipient.trim())) {
+			newData.recipients = [...recipients, newRecipient.trim()];
+		}
+
+		// Встановлюємо нового отримувача як поточного
+		newData.to = newRecipient.trim();
+		onChange(newData);
+
+		// Скидаємо стан
+		setNewRecipient("");
+		setIsAddingNew(false);
+	};
+
+	// Функція для оновлення поточного отримувача
+	const handleUpdateCurrentRecipient = (value: string) => {
+		const newData = { ...data };
+		const recipients = newData.recipients || [];
+		const currentIndex = recipients.indexOf(data.to);
+
+		if (currentIndex !== -1) {
+			// Оновлюємо існуючого отримувача в масиві
+			newData.recipients = [...recipients];
+			newData.recipients[currentIndex] = value;
+		}
+
+		// Оновлюємо поточного отримувача
+		newData.to = value;
+		onChange(newData);
 	};
 
 	return (
@@ -164,13 +220,86 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ data, onChange }) => {
 						<h2>To (Recipient)</h2>
 					</CardTitle>
 				</CardHeader>
-				<CardContent>
-					<Textarea
-						value={data.to}
-						onChange={(e) => handleChange("to", e.target.value)}
-						placeholder="Enter recipient information..."
-						rows={5}
-					/>
+				<CardContent className="space-y-4">
+					{/* Select existing recipient or add new */}
+					<div>
+						<Label htmlFor="recipientSelect">Select Recipient</Label>
+						<div className="flex gap-2">
+							<Select value={data.to} onValueChange={handleSelectRecipient}>
+								<SelectTrigger id="recipientSelect" className="flex-1">
+									<SelectValue placeholder="Select a recipient..." />
+								</SelectTrigger>
+								<SelectContent>
+									{(data.recipients || []).map((recipient, index) => {
+										// Отримуємо перший рядок для відображення в селекті
+										const firstLine =
+											recipient.split("\n")[0] || `Recipient ${index + 1}`;
+										return (
+											<SelectItem key={index} value={recipient}>
+												{firstLine}
+											</SelectItem>
+										);
+									})}
+								</SelectContent>
+							</Select>
+							<Button
+								type="button"
+								variant="outline"
+								size="icon"
+								onClick={() => setIsAddingNew(!isAddingNew)}
+								title="Add new recipient"
+							>
+								<Plus className="h-4 w-4" />
+							</Button>
+						</div>
+					</div>
+
+					{/* Add new recipient form */}
+					{isAddingNew && (
+						<div className="border rounded-lg p-4 space-y-3 bg-gray-50">
+							<Label>New Recipient Information</Label>
+							<Textarea
+								value={newRecipient}
+								onChange={(e) => setNewRecipient(e.target.value)}
+								placeholder="Enter new recipient information..."
+								rows={5}
+							/>
+							<div className="flex gap-2">
+								<Button
+									type="button"
+									onClick={handleAddNewRecipient}
+									size="sm"
+									className="flex items-center gap-2"
+								>
+									<Save className="h-4 w-4" />
+									Save & Select
+								</Button>
+								<Button
+									type="button"
+									variant="outline"
+									onClick={() => {
+										setIsAddingNew(false);
+										setNewRecipient("");
+									}}
+									size="sm"
+								>
+									Cancel
+								</Button>
+							</div>
+						</div>
+					)}
+
+					{/* Edit current recipient */}
+					<div>
+						<Label htmlFor="recipientDetails">Current Recipient Details</Label>
+						<Textarea
+							id="recipientDetails"
+							value={data.to}
+							onChange={(e) => handleUpdateCurrentRecipient(e.target.value)}
+							placeholder="Enter recipient information..."
+							rows={5}
+						/>
+					</div>
 				</CardContent>
 			</Card>
 

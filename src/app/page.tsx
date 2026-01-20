@@ -19,12 +19,29 @@ export default function Home() {
 
 	console.log(invoiceData.products.length);
 
-	// Load data from localStorage on component mount
+	// Load data from localStorage on component mount with migration logic
 	useEffect(() => {
 		const savedData = localStorage.getItem("invoiceData");
 		if (savedData) {
 			try {
 				const parsedData = JSON.parse(savedData);
+
+				// Migration: Convert old 'to' string format to recipients array
+				if (parsedData.to && typeof parsedData.to === "string") {
+					// If 'to' is a string, initialize recipients array with it
+					if (!parsedData.recipients || !Array.isArray(parsedData.recipients)) {
+						parsedData.recipients = [parsedData.to];
+					} else if (!parsedData.recipients.includes(parsedData.to)) {
+						// Add current 'to' to recipients if not already there
+						parsedData.recipients.push(parsedData.to);
+					}
+				}
+
+				// Ensure recipients array exists
+				if (!parsedData.recipients || !Array.isArray(parsedData.recipients)) {
+					parsedData.recipients = parsedData.to ? [parsedData.to] : [];
+				}
+
 				setInvoiceData(parsedData);
 			} catch (error) {
 				console.error("Error parsing saved invoice data:", error);
@@ -55,7 +72,7 @@ export default function Home() {
 		const handleBeforeUnload = () => {
 			try {
 				localStorage.setItem("invoiceData", JSON.stringify(invoiceRef.current));
-			} catch (e) {
+			} catch {
 				// ignore
 			}
 		};
@@ -83,7 +100,7 @@ export default function Home() {
 							onClick={() =>
 								window.open(
 									"https://github.com/vladyslavl/invoice-generator",
-									"_blank"
+									"_blank",
 								)
 							}
 							className="flex items-center gap-2"

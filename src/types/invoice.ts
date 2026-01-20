@@ -7,8 +7,11 @@ export interface InvoiceData {
 	// From section - one field
 	from: string;
 
-	// To section - one field
+	// To section - one field (current recipient)
 	to: string;
+
+	// Recipients list (stored separately in localStorage)
+	recipients?: string[];
 
 	// Bank details - one field
 	bankDetails: string;
@@ -30,6 +33,7 @@ export const emptyInvoiceData: InvoiceData = {
 	companyName: "",
 	from: "",
 	to: "",
+	recipients: [],
 	bankDetails: "",
 	remarks: "",
 	products: [
@@ -63,6 +67,26 @@ United States
 Contact: John Smith
 Phone: +1 (555) 987-6543
 Email: john.smith@abccompany.com`,
+	recipients: [
+		`ABC Company Ltd.
+456 Client Avenue
+Floor 5
+Los Angeles, CA 90210
+United States
+
+Contact: John Smith
+Phone: +1 (555) 987-6543
+Email: john.smith@abccompany.com`,
+		`XYZ Corporation
+789 Business Park
+Suite 200
+San Francisco, CA 94102
+United States
+
+Contact: Jane Doe
+Phone: +1 (555) 111-2222
+Email: jane.doe@xyzcorp.com`,
+	],
 	bankDetails: `Account Holder: Tech Solutions Inc.
 Bank Name: First National Bank
 Account Number: 1234567890
